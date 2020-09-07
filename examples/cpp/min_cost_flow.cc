@@ -12,7 +12,7 @@
 // limitations under the License.
 
 #include "ortools/graph/min_cost_flow.h"
-#include <iostream>
+#include "ortools/base/logging.h"
 
 namespace operations_research {
 struct Arc {
@@ -46,22 +46,22 @@ void SolveMinCostFlow() {
     min_cost_flow.SetNodeSupply(it.first, it.second);
   }
 
-  std::cout << "Solving min cost flow with: " << graph.num_nodes()
-            << " nodes, and " << graph.num_arcs() << " arcs." << std::endl;
+  LOG(INFO) << "Solving min cost flow with: " << graph.num_nodes()
+            << " nodes, and " << graph.num_arcs() << " arcs.";
 
   // Find the maximum flow between node 0 and node 4.
   min_cost_flow.Solve();
   if (MinCostFlow::OPTIMAL != min_cost_flow.status()) {
-    std::cout << "Solving the max flow is not optimal!" << std::endl;
+    LOG(FATAL) << "Solving the max flow is not optimal!";
   }
   FlowQuantity total_flow_cost = min_cost_flow.GetOptimalCost();
-  std::cout  << "Minimum cost flow: " << total_flow_cost << std::endl;
-  std::cout  << "" << std::endl;
-  std::cout  << "Arc   : Flow / Capacity / Cost" << std::endl;
+  LOG(INFO) << "Minimum cost flow: " << total_flow_cost;
+  LOG(INFO) << "";
+  LOG(INFO) << "Arc   : Flow / Capacity / Cost";
   for (int i = 0; i < arcs.size(); ++i) {
-    std::cout  << graph.Tail(i) << " -> " << graph.Head(i) << ": "
+    LOG(INFO) << graph.Tail(i) << " -> " << graph.Head(i) << ": "
               << min_cost_flow.Flow(i) << " / " << min_cost_flow.Capacity(i)
-              << " / " << min_cost_flow.UnitCost(i) << std::endl;
+              << " / " << min_cost_flow.UnitCost(i);
   }
 }
 }  // namespace operations_research
