@@ -24,6 +24,7 @@ Google's software suite for combinatorial optimization.
 
 ## Table of Contents
 
+*   [About this fork](#about-this-fork)
 *   [About OR-Tools](#about-or-tools)
 *   [Codemap](#codemap)
 *   [Installation](#installation)
@@ -32,6 +33,18 @@ Google's software suite for combinatorial optimization.
 *   [Documentation](#documentation)
 *   [Contributing](#contributing)
 *   [License](#license)
+
+## About this fork	
+
+This fork is an experiment/proof of concept for building OR-Tools for web assembly.	
+
+To install/run:	
+
+*   run `em-setup.sh` to install emscripten	
+*   make sure you have a binary of protoc v. 3.12.2 available in path, it is needed by the cmake process	
+    * I did that by downloading source from here https://github.com/protocolbuffers/protobuf/releases/tag/v3.12.2 and afterwards run `make && make install`	
+*   run `cmake-build.sh` to build or-tools for wasm	
+*   run `poc-build.sh` to build and load proof of concept application (min_cost_flow)	
 
 ## About OR-Tools
 
