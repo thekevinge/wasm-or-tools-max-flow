@@ -160,9 +160,9 @@ ProblemStatus LPSolver::SolveWithTimeLimit(const LinearProgram& lp,
   // crash.
   ScopedFloatingPointEnv scoped_fenv;
   if (FLAGS_lp_solver_enable_fp_exceptions) {
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && !defined(__EMSCRIPTEN__)
     scoped_fenv.EnableExceptions(_EM_INVALID | EM_ZERODIVIDE);
-#else
+#elseif !defined(__EMSCRIPTEN__)
     scoped_fenv.EnableExceptions(FE_DIVBYZERO | FE_INVALID);
 #endif
   }
