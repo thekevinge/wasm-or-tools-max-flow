@@ -14,3 +14,19 @@ index 808330e..8adb110 100644
  project(glog VERSION 0.4.0 LANGUAGES C CXX)
  
  set (CPACK_PACKAGE_NAME glog)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 808330e..49ed082 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -394,6 +394,10 @@ elseif (UNIX OR (APPLE AND HAVE_DLADDR))
+   set (HAVE_SYMBOLIZE 1)
+ endif (WIN32 OR CYGWIN)
+ 
++if (EMSCRIPTEN)
++  set (HAVE_SYMBOLIZE 0)
++endif (EMSCRIPTEN)
++
+ check_cxx_source_compiles ("
+ #include <cstdlib>
+ #include <time.h>
