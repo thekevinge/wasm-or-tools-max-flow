@@ -44,7 +44,8 @@ To install/run:
 *   make sure you have a binary of protoc v. 3.12.2 available in path, it is needed by the cmake process	
     * I did that by downloading source from here https://github.com/protocolbuffers/protobuf/releases/tag/v3.12.2 and afterwards run `make && make install`	
 *   run `cmake-build.sh` to build or-tools for wasm	
-*   run `poc-build.sh` to build and load proof of concept application (min_cost_flow)	
+*   run `poc-build.sh` to build proof-of-concept application (min_cost_flow)
+*   run `http-server wasmpoc` or similar to run the PoC
 
 ## About OR-Tools
 
