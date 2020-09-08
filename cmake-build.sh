@@ -2,14 +2,12 @@
 # Adapted from
 # http://marcelbraghetto.github.io/a-simple-triangle/2019/03/10/part-06/
 
-# Make sure we have a 'build' folder.
+# Include host-build.sh to make sure binary hostversion of protobuf::protoc is available for emscripten build
+source host-build.sh
+
+# Make sure we have a 'wasmbuild' folder.
 if [ ! -d "wasmbuild" ]; then
     mkdir wasmbuild
-fi
-
-# Remove the 'out' folder if it exists.
-if [ -d "out" ]; then
-    rm -rf out
 fi
 
 # In order to find the Emscripten build tools, we need to configure some environment variables so they are available during the build. The required environment variables are initialized by sourcing the 'emsdk_env.sh' that ships with the Emscripten SDK.

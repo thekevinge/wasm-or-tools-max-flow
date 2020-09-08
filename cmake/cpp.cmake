@@ -255,6 +255,10 @@ foreach(dir IN LISTS protobuf_dirs)
   endif()
 endforeach()
 
+if(CMAKE_CROSSCOMPILING)
+    include("../hostbuild/hostprotoc")
+endif(CMAKE_CROSSCOMPILING)
+
 foreach(PROTO_FILE IN LISTS proto_files)
   #message(STATUS "protoc proto(cc): ${PROTO_FILE}")
   get_filename_component(PROTO_DIR ${PROTO_FILE} DIRECTORY)
@@ -263,7 +267,18 @@ foreach(PROTO_FILE IN LISTS proto_files)
   set(PROTO_SRC ${PROJECT_BINARY_DIR}/${PROTO_DIR}/${PROTO_NAME}.pb.cc)
   #message(STATUS "protoc hdr: ${PROTO_HDR}")
   #message(STATUS "protoc src: ${PROTO_SRC}")
-  if(NOT CMAKE_CROSSCOMPILING)
+  if(CMAKE_CROSSCOMPILING)
+    add_custom_command(
+        OUTPUT ${PROTO_SRC} ${PROTO_HDR}
+        COMMAND hostprotoc::protoc
+        "--proto_path=${PROJECT_SOURCE_DIR}"
+        ${PROTO_DIRS}
+        "--cpp_out=${PROJECT_BINARY_DIR}"
+        ${PROTO_FILE}
+        DEPENDS ${PROTO_FILE}  hostprotoc::protoc
+        COMMENT "Generate C++ protocol buffer for ${PROTO_FILE}"
+        VERBATIM)
+  else()
     add_custom_command(
         OUTPUT ${PROTO_SRC} ${PROTO_HDR}
         COMMAND protobuf::protoc
@@ -272,16 +287,6 @@ foreach(PROTO_FILE IN LISTS proto_files)
         "--cpp_out=${PROJECT_BINARY_DIR}"
         ${PROTO_FILE}
         DEPENDS ${PROTO_FILE} protobuf::protoc
-        COMMENT "Generate C++ protocol buffer for ${PROTO_FILE}"
-        VERBATIM)
-  else()
-    add_custom_command(
-        OUTPUT ${PROTO_SRC} ${PROTO_HDR}
-        COMMAND protoc
-        "--proto_path=${PROJECT_SOURCE_DIR}"
-        ${PROTO_DIRS}
-        "--cpp_out=${PROJECT_BINARY_DIR}"
-        ${PROTO_FILE}
         COMMENT "Generate C++ protocol buffer for ${PROTO_FILE}"
         VERBATIM)
   endif()
