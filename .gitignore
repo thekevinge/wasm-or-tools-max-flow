@@ -77,5 +77,7 @@ examples/contrib/obj
 examples/dotnet/bin
 examples/dotnet/obj
 
+tools/emscripten/
+
 # Release key
 tools/docker/or-tools.snk
