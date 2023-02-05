@@ -32,40 +32,11 @@ list(APPEND OR_TOOLS_COMPILE_DEFINITIONS
   "USE_BOP" # enable BOP support
   "USE_GLOP" # enable GLOP support
   )
-if(BUILD_LP_PARSER)
-  list(APPEND OR_TOOLS_COMPILE_DEFINITIONS "USE_LP_PARSER")
-endif()
 if(USE_COINOR)
   list(APPEND OR_TOOLS_COMPILE_DEFINITIONS
     "USE_CBC" # enable COIN-OR CBC support
     "USE_CLP" # enable COIN-OR CLP support
   )
-endif()
-if(USE_GLPK)
-  list(APPEND OR_TOOLS_COMPILE_DEFINITIONS "USE_GLPK")
-  set(GLPK_DIR glpk)
-endif()
-if(USE_HIGHS)
-  list(APPEND OR_TOOLS_COMPILE_DEFINITIONS "USE_HIGHS")
-endif()
-if(USE_PDLP)
-  list(APPEND OR_TOOLS_COMPILE_DEFINITIONS "USE_PDLP")
-  set(PDLP_DIR pdlp)
-endif()
-if(USE_SCIP)
-  list(APPEND OR_TOOLS_COMPILE_DEFINITIONS "USE_SCIP")
-  set(GSCIP_DIR gscip)
-endif()
-if(USE_CPLEX)
-  list(APPEND OR_TOOLS_COMPILE_DEFINITIONS "USE_CPLEX")
-endif()
-if(USE_XPRESS)
-  list(APPEND OR_TOOLS_COMPILE_DEFINITIONS "USE_XPRESS")
-  if(MSVC)
-    list(APPEND OR_TOOLS_COMPILE_DEFINITIONS "XPRESS_PATH=\"${XPRESS_ROOT}\"")
-  else()
-    list(APPEND OR_TOOLS_COMPILE_DEFINITIONS "XPRESS_PATH=${XPRESS_ROOT}")
-  endif()
 endif()
 
 if(WIN32)
@@ -255,37 +226,16 @@ target_sources(${PROJECT_NAME} PRIVATE $<TARGET_OBJECTS:${PROJECT_NAMESPACE}::pr
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAMESPACE}::proto)
 
 foreach(SUBPROJECT IN ITEMS
- algorithms
  base
- bop
- constraint_solver
- ${GLPK_DIR}
- ${PDLP_DIR}
- ${GSCIP_DIR}
- glop
  graph
- gurobi
  init
- linear_solver
- lp_data
- packing
  port
- sat
- scheduling
  util)
   add_subdirectory(ortools/${SUBPROJECT})
   #target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_${SUBPROJECT})
   target_sources(${PROJECT_NAME} PRIVATE $<TARGET_OBJECTS:${PROJECT_NAME}_${SUBPROJECT}>)
   add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_${SUBPROJECT})
 endforeach()
-
-add_subdirectory(ortools/linear_solver/wrappers)
-target_sources(${PROJECT_NAME} PRIVATE $<TARGET_OBJECTS:${PROJECT_NAME}_linear_solver_wrappers>)
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_linear_solver_wrappers)
-
-add_subdirectory(ortools/linear_solver/proto_solver)
-target_sources(${PROJECT_NAME} PRIVATE $<TARGET_OBJECTS:${PROJECT_NAME}_linear_solver_proto_solver>)
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_linear_solver_proto_solver)
 
 ###################
 ## Install rules ##
